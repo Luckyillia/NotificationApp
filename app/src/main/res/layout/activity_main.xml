@@ -12,4 +12,16 @@
      android:layout_height="wrap_content"
      android:layout_gravity="center"
      android:text="Powiadomienie"/>
+ <Button
+     android:id="@+id/but_large"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:layout_gravity="center"
+     android:text="Powiadomienie Large"/>
+ <Button
+     android:id="@+id/but_img"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:layout_gravity="center"
+     android:text="Powiadomienie Picture"/>
 </LinearLayout>

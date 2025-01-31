@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
@@ -22,10 +24,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button but = findViewById(R.id.but);
-
         createNotificationChannel();
-
         but.setOnClickListener(v->sendNotification());
+
+        Button but_large = findViewById(R.id.but_large);
+        createNotificationChannel();
+        but_large.setOnClickListener(v->sendNotificationLong());
+
+        Button but_img = findViewById(R.id.but_img);
+        createNotificationChannel();
+        but_img.setOnClickListener(v->sendNotificationLargeIcon());
 
     }
     private  void createNotificationChannel(){
@@ -40,7 +48,25 @@ public class MainActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
     }
-    private void sendNotification(){
+
+    private void sendNotificationLargeIcon(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            if(checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED){
+                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS},1);
+                return;
+            }
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.dice1);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_launcher_background)
+                    .setContentTitle("Nowe Powidomienie 3TP")
+                    .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap))
+                    .setAutoCancel(true);
+            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+            notificationManagerCompat.notify(1, builder.build());
+        }
+    }
+
+    private void sendNotificationLong(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
             if(checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED){
                 requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS},1);
@@ -49,11 +75,28 @@ public class MainActivity extends AppCompatActivity {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_launcher_background)
                     .setContentTitle("Nowe Powidomienie 3TP")
-                    .setContentText("Tresc powiadomienia 3TP")
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et imperdiet nunc. Aliquam eleifend, metus tincidunt ornare sollicitudin, tellus erat lobortis lorem, non viverra risus orci ut purus. Morbi ultricies."))
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setAutoCancel(true);
             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
-            notificationManagerCompat.notify(1, builder.build());
+            notificationManagerCompat.notify(2, builder.build());
         }
+    }
+
+    private void sendNotification(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
+                return;
+            }
+        }
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentTitle("Nowe Powidomienie 3TP")
+                .setContentText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et imperdiet nunc. Aliquam eleifend, metus tincidunt ornare sollicitudin, tellus erat lobortis lorem, non viverra risus orci ut purus. Morbi ultricies.")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true);
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+        notificationManagerCompat.notify(3, builder.build());
     }
 }
