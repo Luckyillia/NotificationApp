@@ -11,17 +11,20 @@
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
      android:layout_gravity="center"
+     android:backgroundTint="@color/material_dynamic_secondary95"
      android:text="Powiadomienie"/>
  <Button
      android:id="@+id/but_large"
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
      android:layout_gravity="center"
+     android:backgroundTint="@color/black"
      android:text="Powiadomienie Large"/>
  <Button
      android:id="@+id/but_img"
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
      android:layout_gravity="center"
+     android:backgroundTint="@color/material_dynamic_primary10"
      android:text="Powiadomienie Picture"/>
 </LinearLayout>

@@ -1,3 +1,4 @@
+
 package com.example.notifications;
 
 import android.Manifest;
@@ -9,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.camera2.CameraExtensionSession;
 import android.os.Build;
+import android.text.style.ImageSpan;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -38,22 +40,30 @@ public class NotificationHelper {
 
     public static void sendNotification(int NOTIFICATION_ID, String CHANNEL_ID, AppCompatActivity activity, String title, String message, int styleType, int largeIconId){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
+            if (ContextCompat.checkSelfPermission(activity, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            } else {
+                ActivityCompat.requestPermissions(activity,new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
                 return;
             }
         }
 
         NotificationManager notificationManager = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(activity, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentTitle(title)
-                .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true);
-        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
-        notificationManagerCompat.notify(3, builder.build());
-    }
+        switch (styleType){
+            case 1:
+                builder.setContentText(message);
+            case 2:
+                builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
+            case 3:
+                Bitmap bitmap = BitmapFactory.decodeResource(activity.getResources(), largeIconId);
+                builder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap));
+        }
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(activity);
+        notificationManagerCompat.notify(NOTIFICATION_ID, builder.build());
     }
 }

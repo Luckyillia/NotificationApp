@@ -16,7 +16,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    private String CHANNEL_ID =  "My_Channel_ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
