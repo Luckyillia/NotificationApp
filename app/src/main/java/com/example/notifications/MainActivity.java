@@ -24,16 +24,32 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button but = findViewById(R.id.but);
-        createNotificationChannel();
-        but.setOnClickListener(v->sendNotification());
+        NotificationHelper.creatNotificationChannels(this);
+
+        but.setOnClickListener(v->NotificationHelper.sendNotification(2,
+                2,
+                this,
+                "Nowe Powidomienie 3TP",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et imperdiet nunc.",
+                1,0));
 
         Button but_large = findViewById(R.id.but_large);
-        createNotificationChannel();
-        but_large.setOnClickListener(v->sendNotificationLong());
+
+        but_large.setOnClickListener(v->NotificationHelper.sendNotification(1,
+                2,
+                this,
+                "Nowe Powidomienie 3TP",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et imperdiet nunc. Aliquam eleifend, metus tincidunt ornare sollicitudin, tellus erat lobortis lorem, non viverra risus orci ut purus. Morbi ultricies.",
+                2,0));
 
         Button but_img = findViewById(R.id.but_img);
-        createNotificationChannel();
-        but_img.setOnClickListener(v->sendNotificationLargeIcon());
+
+        but_img.setOnClickListener(v->NotificationHelper.sendNotification(2,
+                2,
+                this,
+                "Nowe Powidomienie 3TP",
+                null,
+                3,R.drawable.dice1));
 
     }
     private  void createNotificationChannel(){
